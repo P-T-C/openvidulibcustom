@@ -26,5 +26,6 @@
     <string name="offer_to_receive_audio">"offerToReceiveAudio"</string>
     <string name="loading_message">Loading. Please wait...</string>
     <string name="null_text"></string>
+    <string name="server_error">Server error</string>
     <string name="bad_request">BAD REQUEST</string>
 </resources>

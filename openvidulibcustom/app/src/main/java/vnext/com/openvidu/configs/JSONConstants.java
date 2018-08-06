@@ -9,6 +9,7 @@ public final class JSONConstants {
     public static final String PARAMS = "params";
     public static final String METHOD = "method";
     public static final String ID = "id";
+    public static final String TOKEN = "token";
     public static final String RESULT = "result";
     public static final String ICE_CANDIDATE = "iceCandidate";
     public static final String PARTICIPANT_JOINED = "participantJoined";

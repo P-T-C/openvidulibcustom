@@ -97,9 +97,8 @@ public final class CustomWebSocketListener implements WebSocketListener {
     @Override
     public void onConnected(WebSocket websocket, Map<String, List<String>> headers) throws Exception {
         Log.i(TAG, "Connected");
-
+        System.out.println("web socket connected");
         pingMessageHandler(websocket);
-
         String regex = "(room)+";
         String baseAddress = socketAddress.split(regex)[0];
         Map<String, String> joinRoomParams = new HashMap<String, String>();
@@ -110,7 +109,6 @@ public final class CustomWebSocketListener implements WebSocketListener {
         joinRoomParams.put("token", "gr50nzaqe6avt65cg5v06");
         Log.e("check data","check data:"+ joinRoomParams.toString());
         sendJson(websocket, "joinRoom", joinRoomParams);
-
         if (localOfferParams != null) {
             sendJson(websocket, "publishVideo", localOfferParams);
         }

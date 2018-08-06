@@ -89,7 +89,8 @@ public class WebSocketTask extends AsyncTask<VideoConferenceActivity, Void, Void
             SSLContext sslContext = SSLContext.getInstance(activity.getResources().getString(R.string.ssl_context_protocol));
             sslContext.init(null, trustManagers, new java.security.SecureRandom());
             factory.setSSLContext(sslContext);
-            socketAddress = getSocketAddress();
+//         socketAddress = getSocketAddress();
+socketAddress = "wss://demo.vnext.work:4443?sessionId=Office24&token=mel2ems9o8mizkdk&role=PUBLISHER&turnUsername=NUTQFJ&turnCredential=92ywxb";
             peersManager.setWebSocket(new WebSocketFactory().createSocket(socketAddress));
             peersManager.setWebSocketAdapter(new CustomWebSocketListener(parameters[0], peersManager, sessionName, participantName, activity.getViewsContainer(), socketAddress));
             peersManager.getWebSocket().addListener(peersManager.getWebSocketAdapter());
@@ -113,8 +114,8 @@ public class WebSocketTask extends AsyncTask<VideoConferenceActivity, Void, Void
     }
 
     private String getSocketAddress() {
-
         String baseAddress = socketAddress;
+        baseAddress = "wss://demo.vnext.work:4443?sessionId=aormg9ufitaygm7u&token=e0llccbxxixff5je&role=PUBLISHER&turnUsername=LSRJN9&turnCredential=nafgbw";
         String secureWebSocketPrefix = activity.getResources().getString(R.string.secure_web_socket_prefix);
         String insecureWebSocketPrefix = activity.getResources().getString(R.string.insecure_web_socket_prefix);
         if (baseAddress.split(secureWebSocketPrefix).length == 1 && baseAddress.split(insecureWebSocketPrefix).length == 1) {

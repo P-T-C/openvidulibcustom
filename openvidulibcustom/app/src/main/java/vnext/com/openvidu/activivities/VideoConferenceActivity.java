@@ -1,6 +1,7 @@
 package vnext.com.openvidu.activivities;
 
 import android.Manifest;
+import android.content.Context;
 import android.support.v4.app.DialogFragment;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -30,19 +31,21 @@ import butterknife.ButterKnife;
 import vnext.com.openvidu.R;
 import vnext.com.openvidu.configs.JSONConstants;
 import vnext.com.openvidu.fragments.PermissionsDialogFragment;
+import vnext.com.openvidu.interfaces.VideoImpl;
+import vnext.com.openvidu.interfaces.VideoInterface;
+import vnext.com.openvidu.interfaces.VideoListener;
 import vnext.com.openvidu.managers.PeersManager;
 import vnext.com.openvidu.models.TokenModel;
 import vnext.com.openvidu.network.APIListener;
 import vnext.com.openvidu.network.MainApi;
 import vnext.com.openvidu.tasks.WebSocketTask;
-public class VideoConferenceActivity extends AppCompatActivity implements APIListener{
+public class VideoConferenceActivity extends AppCompatActivity implements VideoListener {
 	private static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
 	private static final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 101;
 	private static final int MY_PERMISSIONS_REQUEST = 102;
 	private VideoRenderer remoteRenderer;
 	private PeersManager peersManager;
 	private WebSocketTask webSocketTask;
-	private	MainApi mainApi;
 	@BindView(R.id.views_container)
 	LinearLayout views_container;
 	@BindView(R.id.start_finish_call)
@@ -61,6 +64,7 @@ public class VideoConferenceActivity extends AppCompatActivity implements APILis
 	TextView main_participant;
 	@BindView(R.id.peer_container)
 	FrameLayout peer_container;
+	VideoImpl videoInterface;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,17 +79,16 @@ public class VideoConferenceActivity extends AppCompatActivity implements APILis
 		participant_name.setText(participant_name.getText().append(String.valueOf(randomIndex)));
 		this.peersManager = new PeersManager(this, views_container, localVideoView);
 		initViews();
-		initControls();
-
-	}
-	public void initControls(){
 		getSession();
 	}
+
+
 	public void getSession(){
+		videoInterface=new VideoImpl(this,this);
 		btnGetToken.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mainApi.getSession();
+				videoInterface.createRoom("Office24","PUBLISHER","Xin chao !");
 			}
 		});
 	}
@@ -119,7 +122,7 @@ public class VideoConferenceActivity extends AppCompatActivity implements APILis
 		EglBase rootEglBase = EglBase.create();
 		localVideoView.init(rootEglBase.getEglBaseContext(), null);
 		localVideoView.setZOrderMediaOverlay(true);
-		mainApi= new MainApi(this,this);
+
 
 	}
 
@@ -154,8 +157,8 @@ public class VideoConferenceActivity extends AppCompatActivity implements APILis
 		main_participant.setPadding(20, 3, 20, 3);
 		String sessionName = session_name.getText().toString();
 		String participantName = participant_name.getText().toString();
-//		String socketAddress = socket_address.getText().toString();
-		String socketAddress = "https://demo.vnext.work:4443/api/sessions/bzqpnutpbcc4kztt";
+		String socketAddress = socket_address.getText().toString();
+
 		webSocketTask = (WebSocketTask) new WebSocketTask(this, peersManager, sessionName, participantName, socketAddress).execute(this);
 	}
 
@@ -219,38 +222,26 @@ public class VideoConferenceActivity extends AppCompatActivity implements APILis
 		hangup();
 		super.onStop();
 	}
+
+
 	@Override
-	public void onSessionSuccess(String message) {
-		try {
-			JSONObject data = new JSONObject(message);
-			String session = data.getString(JSONConstants.ID);
-			TokenModel tokenModel = new TokenModel(session,"SUBSCRIBER","hello");
-			mainApi.getTokens(tokenModel);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		catch (Exception e){
-			e.printStackTrace();
-		}
+	public void onCreateRoomSuccess(String link) {
+		System.out.println(link);
+		Toast.makeText(this,link,Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
-	public void onSessionError(String message) {
-		showMessage(message);
+	public void onJoinRoomSuccess(String message) {
+
 	}
+
 	@Override
-	public void onTokenSuccess(String message) {
-		showMessage(message);
+	public void onJoinRoomError(String message) {
+
 	}
+
 	@Override
-	public void onTokenError(String message) {
-		showMessage(message);
-	}
-	public void showMessage(String message){
+	public void onCreateRoomError(String message) {
 		Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
-	}
-	@Override
-	public void onRequestError(String message) {
-		showMessage(message);
 	}
 }

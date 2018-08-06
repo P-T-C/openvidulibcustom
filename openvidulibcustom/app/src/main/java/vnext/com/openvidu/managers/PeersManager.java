@@ -38,7 +38,6 @@ import vnext.com.openvidu.observers.CustomSdpObserver;
  */
 
 public class PeersManager {
-
     private PeerConnection localPeer;
     private PeerConnectionFactory peerConnectionFactory;
     private CustomWebSocketListener webSocketAdapter;
@@ -50,7 +49,6 @@ public class PeersManager {
     private SurfaceViewRenderer localVideoView;
     private VideoCapturer videoGrabberAndroid;
     private VideoConferenceActivity activity;
-
     public PeersManager(VideoConferenceActivity activity, LinearLayout views_container, SurfaceViewRenderer localVideoView) {
         this.views_container = views_container;
         this.localVideoView = localVideoView;

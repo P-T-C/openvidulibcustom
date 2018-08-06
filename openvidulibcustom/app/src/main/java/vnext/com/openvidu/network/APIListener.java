@@ -7,11 +7,9 @@ package vnext.com.openvidu.network;
  */
 
 public interface APIListener {
-    public void onSessionSuccess(String message);
-    public void onSessionError(String message);
-
-    public void onTokenSuccess(String message);
-    public void onTokenError(String message);
-
-    public void onRequestError(String message);
+  void onSessionSuccess(String message);
+  void onSessionError(String message);
+   void onTokenSuccess(String message);
+  void onTokenError(String message);
+ void onRequestError(String message);
 }
